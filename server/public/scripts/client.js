@@ -5,6 +5,7 @@ $( document ).ready( function(){
 
   $(document).on('click', '#submitButton', applyTasks);
   $('#taskList').on('click', '.completeButton', completeTask);
+  $('#taskList').on('click', '.deleteButton', removeTask);
 
     getAllTasks();
 });
@@ -83,6 +84,19 @@ function completeTask() {
   })
   }
 
+  function removeTask() {
+    console.log($(this).data());
+    var jobIdToRemove = $(this).data().id;
+    console.log('removeTask was clicked. The task id was', jobIdToRemove);
+
+    $.ajax({
+        method: 'DELETE',
+        url: '/todo/' + jobIdToRemove,
+        success: function() {
+            getAllTasks();
+        }
+    });
+}
 
 
 
