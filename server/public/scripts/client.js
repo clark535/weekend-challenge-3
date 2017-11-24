@@ -4,6 +4,11 @@ $( document ).ready( function(){
   console.log( 'JQ' );
 
   $(document).on('click', '#submitButton', applyTasks);
+  $('#taskList').on('click', '.completeButton', completeTask);
+
+    getAllTasks();
+});
+
 
   function applyTasks() {
       console.log('in applyTasks');
@@ -23,6 +28,7 @@ $( document ).ready( function(){
 
         }
     })
+};
 
 
 
@@ -60,26 +66,24 @@ $( document ).ready( function(){
         
     });
   };
-};
-});
-// });
-// $.ajax({
-//     url: '/koalas',
-//     type: 'GET',
-//     success: function( data ){
-//       $('#viewKoalas').empty();
-//       for (var i = 0; i < data.length; i++) {
-//       var koala = data[i];
-      
-//       console.log( 'got some koalas: ', koala );
 
-//       var $listKoala = $('<tr><td>' + koala.name + '</td><td>' + koala.gender + '</td><td>' + koala.age + '</td><td>' + koala.ready_to_transfer + '</td><td>' + koala.notes + '</td><td><button class="deleteButton">Delete</button></td></tr>');
 
-//       $listKoala.data('id', koala.id);
-//       $('#viewKoalas').append($listKoala);  
-//         if (koala.ready_to_transfer == 'N') {
-//           $listKoala.append('<button class="tranferButton">Ready to Transfer</button>')
-//       } 
-//       }; 
-//     } // end success
-//   }); //end aj
+function completeTask() {
+    var jobIdToComplete = $(this).data().id;
+    
+    $.ajax({
+      method: 'PUT',
+      url: '/todo/' + jobIdToComplete,
+    //   data: {
+    //       id: jobIdToComplete
+    //   },
+      success: function(response) {
+        getAllTasks();
+      }
+  })
+  }
+
+
+
+
+
