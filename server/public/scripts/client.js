@@ -6,6 +6,8 @@ $( document ).ready( function(){
   $(document).on('click', '#submitButton', applyTasks);
   $('#taskList').on('click', '.completeButton', completeTask);
   $('#taskList').on('click', '.deleteButton', removeTask);
+  
+  
 
     getAllTasks();
 });
@@ -14,7 +16,7 @@ $( document ).ready( function(){
   function applyTasks() {
       console.log('in applyTasks');
       var $inputValue = $('#inputTask').val()
-      $('#taskList').append('<tr><td>' + $inputValue + '</td></tr>');
+      $('#taskList').append('<tr class="taskRow"><td>' + $inputValue + '</td></tr>');
   
     $.ajax({
         method: 'POST',
@@ -29,6 +31,7 @@ $( document ).ready( function(){
 
         }
     })
+    $('#inputTask').val('');
 };
 
 
@@ -42,15 +45,15 @@ $( document ).ready( function(){
             $('#taskList').empty();
             for (var i = 0; i < response.length; i++) {
                 var jobs = response[i];
-
+                
                 console.log('got the job', jobs);
 
-                var $newTaskItem = $('<tr><td>' + jobs.task + '</td><td>' + jobs.status + '</td></tr>');
+                var $newTaskItem = $('<tr class="taskRow"><td>' + jobs.task + '</td><br><td>' + jobs.status + '</td></tr><br>');
+                if (jobs.status == "complete") {
+                    $('.taskRow').css('background-color', 'limegreen');
+                } 
 
-                //var $changeShoeInput = $('<input class="newShoeInput" placeholder="enter shoe name">');
-                //$newShoeItem.append($changeShoeInput);
-
-                //create  and append save button
+                //create  and append complete button
                 var $completeTaskButton = $('<button class="completeButton">Completed</button>');
                 $completeTaskButton.data('id', jobs.id);
                 $newTaskItem.append($completeTaskButton);
@@ -62,27 +65,29 @@ $( document ).ready( function(){
 
                 //append the new list item to the DOM
                 $('#taskList').append($newTaskItem);
+                }
             }           
-        }
+        });
         
-    });
-  };
+    };
+
 
 
 function completeTask() {
+    
     var jobIdToComplete = $(this).data().id;
+
     
     $.ajax({
       method: 'PUT',
       url: '/todo/' + jobIdToComplete,
-    //   data: {
-    //       id: jobIdToComplete
-    //   },
       success: function(response) {
         getAllTasks();
+        
       }
   })
-  }
+  //$(this).css('background-color', 'limegreen');
+}
 
   function removeTask() {
     console.log($(this).data());
