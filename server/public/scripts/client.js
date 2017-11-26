@@ -6,9 +6,7 @@ $( document ).ready( function(){
   $(document).on('click', '#submitButton', applyTasks);
   $('.taskList').on('click', '.completeButton', completeTask);
   $('.taskList').on('click', '.deleteButton', removeTask);
-  //$('#taskList').on('click', '.completeButton', stupidGreenThing);
-  
-  
+
 
     getAllTasks();
 });
@@ -45,16 +43,11 @@ function getAllTasks() {
             console.log('response', response);
             $('.taskList').html('');
             for (var i = 0; i < response.length; i++) {
-                var jobs = response[i];
-
-                //var $newTaskItem = $('<tr><td>' + jobs.task + '</td><br><td>' + jobs.status + '</td></tr><br>');                    
-                
+                var jobs = response[i];                    
 
                 if (jobs.status == 'complete') {
                     
-                    var $newTaskItem = $('<tr><td class="taskTD">' + jobs.task + '</td><br><td class="compeleteStatus">' + jobs.status + '</td><td><input type="checkbox" checked="checked"></td></tr><br>');                                        
-                    //$('.taskTD').css('background-color', 'limegreen');
-                    //$('.completeStatus').parent().append('<td><input type="checkbox" checked="checked"></td>');
+                    var $newTaskItem = $('<tr><td class="taskTD">' + jobs.task + '</td><br><td>' + jobs.status + '</td><td><input type="checkbox" checked="checked"></td></tr><br>');
                     
                     console.log('if statement is working, in jobRow', jobs);
 
@@ -74,22 +67,16 @@ function getAllTasks() {
                 console.log('got the job', jobs);
 
                 var $oldTaskItem = $('<tr><td>' + jobs.task + '</td><br><td>' + jobs.status + '</td></tr><br>');
-                // if (jobs.status === 'complete') {
-                //     $('.completeButton').parent().parent().css('background-color', 'limegreen');
-                    
-                // } 
-
-                //create  and append complete button
+                
+                
                 var $completeTaskButton = $('<button class="completeButton">Completed</button>');
                 $completeTaskButton.data('id', jobs.id);
                 $oldTaskItem.append($completeTaskButton);
 
-                //create and append delete button
                 var $deleteTaskButton = $('<button class="deleteButton">Delete</button>');
                 $deleteTaskButton.data('id', jobs.id);
                 $oldTaskItem.append($deleteTaskButton);
 
-                //append the new list item to the DOM
                 $('.taskList').append($oldTaskItem);
                 }
                 }
@@ -101,10 +88,7 @@ function getAllTasks() {
 
 
 function completeTask() {
-    //$('td').addClass('completedRow');
     var jobIdToComplete = $(this).data().id;
-    // $(this).parent().addClass('turnItGreen');
-    // $(this).parent().append('<input type="checkbox" checked="checked">');
     
     $.ajax({
       method: 'PUT',
@@ -114,7 +98,6 @@ function completeTask() {
         
       }
   })
-  //$(this).css('background-color', 'limegreen');
 }
 
   function removeTask() {
@@ -130,8 +113,3 @@ function completeTask() {
         }
     });
 }
-
-// function stupidGreenThing() {
-//     $('.completedButton').parent().parent().css('background-color', 'limegreen');
-// }
-
