@@ -4,8 +4,9 @@ $( document ).ready( function(){
   console.log( 'JQ' );
 
   $(document).on('click', '#submitButton', applyTasks);
-  $('#taskList').on('click', '.completeButton', completeTask);
-  $('#taskList').on('click', '.deleteButton', removeTask);
+  $('.taskList').on('click', '.completeButton', completeTask);
+  $('.taskList').on('click', '.deleteButton', removeTask);
+  //$('#taskList').on('click', '.completeButton', stupidGreenThing);
   
   
 
@@ -16,7 +17,7 @@ $( document ).ready( function(){
   function applyTasks() {
       console.log('in applyTasks');
       var $inputValue = $('#inputTask').val()
-      $('#taskList').append('<tr class="taskRow"><td>' + $inputValue + '</td></tr>');
+      $('.taskList').append('<tr><td>' + $inputValue + '</td></tr>');
   
     $.ajax({
         method: 'POST',
@@ -36,35 +37,61 @@ $( document ).ready( function(){
 
 
 
-  function getAllTasks() {
+function getAllTasks() {
     $.ajax({
         method: 'GET',
         url: '/todo',
         success: function(response) {
             console.log('response', response);
-            $('#taskList').empty();
+            $('.taskList').html('');
             for (var i = 0; i < response.length; i++) {
                 var jobs = response[i];
+
+                //var $newTaskItem = $('<tr><td>' + jobs.task + '</td><br><td>' + jobs.status + '</td></tr><br>');                    
                 
+
+                if (jobs.status == 'complete') {
+                    
+                    var $newTaskItem = $('<tr><td class="taskTD">' + jobs.task + '</td><br><td class="compeleteStatus">' + jobs.status + '</td><td><input type="checkbox" checked="checked"></td></tr><br>');                                        
+                    //$('.taskTD').css('background-color', 'limegreen');
+                    //$('.completeStatus').parent().append('<td><input type="checkbox" checked="checked"></td>');
+                    
+                    console.log('if statement is working, in jobRow', jobs);
+
+                    var $completeTaskButton = $('<button class="completeButton">Completed</button>');
+                    $completeTaskButton.data('id', jobs.id);
+                    $newTaskItem.append($completeTaskButton);
+
+                    var $deleteTaskButton = $('<button class="deleteButton">Delete</button>');
+                    $deleteTaskButton.data('id', jobs.id);
+                    $newTaskItem.append($deleteTaskButton);
+
+                    $('.taskList').append($newTaskItem);                    
+                    
+                } else {
+
+
                 console.log('got the job', jobs);
 
-                var $newTaskItem = $('<tr class="taskRow"><td>' + jobs.task + '</td><br><td>' + jobs.status + '</td></tr><br>');
-                if (jobs.status == "complete") {
-                    $('.taskRow').css('background-color', 'limegreen');
-                } 
+                var $oldTaskItem = $('<tr><td>' + jobs.task + '</td><br><td>' + jobs.status + '</td></tr><br>');
+                // if (jobs.status === 'complete') {
+                //     $('.completeButton').parent().parent().css('background-color', 'limegreen');
+                    
+                // } 
 
                 //create  and append complete button
                 var $completeTaskButton = $('<button class="completeButton">Completed</button>');
                 $completeTaskButton.data('id', jobs.id);
-                $newTaskItem.append($completeTaskButton);
+                $oldTaskItem.append($completeTaskButton);
 
                 //create and append delete button
                 var $deleteTaskButton = $('<button class="deleteButton">Delete</button>');
                 $deleteTaskButton.data('id', jobs.id);
-                $newTaskItem.append($deleteTaskButton);
+                $oldTaskItem.append($deleteTaskButton);
 
                 //append the new list item to the DOM
-                $('#taskList').append($newTaskItem);
+                $('.taskList').append($oldTaskItem);
+                }
                 }
             }           
         });
@@ -74,9 +101,10 @@ $( document ).ready( function(){
 
 
 function completeTask() {
-    
+    //$('td').addClass('completedRow');
     var jobIdToComplete = $(this).data().id;
-
+    // $(this).parent().addClass('turnItGreen');
+    // $(this).parent().append('<input type="checkbox" checked="checked">');
     
     $.ajax({
       method: 'PUT',
@@ -103,6 +131,7 @@ function completeTask() {
     });
 }
 
-
-
+// function stupidGreenThing() {
+//     $('.completedButton').parent().parent().css('background-color', 'limegreen');
+// }
 

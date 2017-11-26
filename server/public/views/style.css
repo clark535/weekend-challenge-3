@@ -1,3 +1,9 @@
+.taskTD {
+    background-color: limegreen;
+};
+
+
+
 /* #taskList:contains(“complete”)::found-strings {
     background-color: limegreen;
 }; */
