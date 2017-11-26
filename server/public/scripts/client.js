@@ -31,7 +31,7 @@ $( document ).ready( function(){
         }
     })
     $('#inputTask').val('');
-};
+};//end function to add a new task to the list
 
 
 
@@ -47,7 +47,7 @@ function getAllTasks() {
 
                 if (jobs.status == 'complete') {
                     
-                    var $newTaskItem = $('<tr><td class="taskTD">' + jobs.task + '</td><br><td>' + jobs.status + '</td><td><input type="checkbox" checked="checked"></td></tr><br>');
+                    var $newTaskItem = $('<tr><td class="taskTD">' + jobs.task + '</td><br><td>' + jobs.status + '</td><td><input type="checkbox" checked="checked" class="checkBox"></td></tr><br>');
                     
                     console.log('if statement is working, in jobRow', jobs);
 
@@ -83,7 +83,7 @@ function getAllTasks() {
             }           
         });
         
-    };
+    };//end function that applies the list to the DOM and changes compete css effects
 
 
 
@@ -98,7 +98,7 @@ function completeTask() {
         
       }
   })
-}
+}//end function to change status from incomplete to complete
 
   function removeTask() {
     console.log($(this).data());
@@ -112,4 +112,4 @@ function completeTask() {
             getAllTasks();
         }
     });
-}
+}//end delete task function

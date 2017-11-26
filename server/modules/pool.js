@@ -3,11 +3,11 @@ var pg = require('pg');
 var pool = new pg.Pool(config);
 
 var config = {
-    database: 'todo_application', //name of our database
-    host: 'localhost', //where is your datebase - which computer
-    port: 5432, //the port number for your database - 5432 is default
-    max: 10, // how many connections at one time
-    idleTimeoutMillies: 30000 // 30 secdons to try to connect to our database
+    database: 'todo_application', 
+    host: 'localhost', 
+    port: 5432,
+    max: 10, 
+    idleTimeoutMillies: 30000
 };
 
 module.exports = new pg.Pool(config);

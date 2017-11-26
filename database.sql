@@ -1,5 +1,5 @@
-database: todo_application
-table: todo
+-- database: todo_application
+-- table: todo
 
 CREATE TABLE todo (
 id SERIAL PRIMARY KEY,
